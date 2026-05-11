@@ -1,74 +1,446 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Faris Portfolio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فارس الغامدي | سيرتك الذاتية الاحترافية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #d4af37; --dark: #020617; --glass-bg: rgba(255, 255, 255, 0.03); }
+        
+        body { 
+            font-family: 'Tajawal', sans-serif; 
+            background-color: var(--dark); 
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
 
-  <style>
-    body {
-      margin: 0;
-      background: #0d0d0d;
-      color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-    }
+        .font-en { font-family: 'Inter', sans-serif; }
+        
+        .glass { 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(212, 175, 55, 0.1); 
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        
+        .glass:hover { 
+            border-color: var(--gold); 
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.05);
+        }
 
-    .card {
-      background: #161616;
-      padding: 40px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 600px;
-      box-shadow: 0 0 40px rgba(255,255,255,0.05);
-    }
+        .gold-text { color: var(--gold); background: linear-gradient(to right, #fcf6ba, #d4af37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gold-bg { background: linear-gradient(135deg, #d4af37 0%, #b8962d 100%); }
 
-    h1 {
-      font-size: 48px;
-      margin-bottom: 10px;
-    }
+        .hidden-content { display: none; }
+        
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-    p {
-      color: #b3b3b3;
-      line-height: 1.8;
-    }
+        .btn-pulse {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-pulse::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s;
+            border-radius: 50%;
+        }
+        .btn-pulse:active::after { transform: translate(-50%, -50%) scale(1); opacity: 0; }
 
-    .btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 14px 28px;
-      background: white;
-      color: black;
-      text-decoration: none;
-      border-radius: 12px;
-      font-weight: bold;
-    }
+        @keyframes highlight {
+            0% { border-color: var(--gold); box-shadow: 0 0 0px var(--gold); }
+            50% { border-color: #fff; box-shadow: 0 0 30px var(--gold); }
+            100% { border-color: rgba(212, 175, 55, 0.1); box-shadow: 0 0 0px var(--gold); }
+        }
+        .section-highlight { animation: highlight 2s ease-in-out; }
 
-    .btn:hover {
-      opacity: 0.8;
-    }
-  </style>
+        .bg-mesh {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                              radial-gradient(circle at 80% 70%, rgba(30, 58, 138, 0.1) 0%, transparent 40%);
+            z-index: -1;
+        }
+    </style>
 </head>
+<body class="text-white overflow-x-hidden">
+    <div class="bg-mesh"></div>
 
-<body>
+    <!-- شاشة اختيار اللغة -->
+    <div id="lang-selector" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#020617]">
+        <div class="text-center p-12 glass rounded-[3rem] max-w-sm w-full mx-4 shadow-2xl scale-in">
+            <h2 class="text-3xl mb-8 font-bold tracking-tight gold-text">فارس الغامدي</h2>
+            <div class="flex flex-col gap-4">
+                <button onclick="startApp('ar')" class="py-4 gold-bg text-black rounded-2xl font-bold text-lg hover:scale-105 transition btn-pulse shadow-lg">استعراض بالعربية</button>
+                <button onclick="startApp('en')" class="py-4 border border-[#d4af37] text-[#d4af37] rounded-2xl font-bold text-lg hover:bg-[#d4af37]/10 transition font-en btn-pulse">View in English</button>
+            </div>
+        </div>
+    </div>
 
-  <div class="card">
-    <h1>Faris</h1>
+    <!-- المحتوى الرئيسي -->
+    <main id="main-app" class="hidden-content min-h-screen">
+        
+        <!-- Navbar -->
+        <nav class="fixed top-0 left-0 right-0 z-50 p-6 backdrop-blur-xl border-b border-white/5">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="text-2xl font-bold tracking-[0.2em] gold-text">FARIS</div>
+                <div class="flex items-center gap-8">
+                    <a href="#contact-section" class="hidden md:block hover:text-[#d4af37] transition text-[10px] uppercase tracking-[0.3em] font-light" id="nav-contact">تواصل معي</a>
+                    <button onclick="toggleLang()" class="glass px-5 py-2 rounded-full text-[10px] border-[#d4af37]/30 hover:bg-[#d4af37]/20 transition font-en uppercase tracking-widest" id="lang-toggle">English</button>
+                </div>
+            </div>
+        </nav>
 
-    <p>
-      Front Desk Professional<br>
-      Passionate about hospitality, communication, and technology.
-    </p>
+        <!-- Hero Section -->
+        <section class="pt-40 pb-20 px-6 max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-8 glass p-10 md:p-20 rounded-[4rem] relative overflow-hidden reveal">
+                    <div class="absolute -right-20 -top-20 w-96 h-96 bg-[#d4af37]/10 rounded-full blur-[120px]"></div>
+                    <h1 class="text-6xl md:text-8xl font-bold mb-10 leading-none tracking-tighter" id="hero-name">فارس الغامدي</h1>
+                    <p class="text-gray-400 text-xl md:text-2xl leading-relaxed max-w-2xl border-l-2 border-[#d4af37] pl-8" id="hero-bio">
+                        متخصص محترف يجمع بين مهارات الضيافة الراقية والصرامة الإدارية. أرتكز على الانضباط والذكاء الاجتماعي لتقديم أداء استثنائي يحقق أهداف المنظمة ويتجاوز التوقعات.
+                    </p>
+                    <div class="mt-12 flex flex-wrap gap-6">
+                        <button onclick="scrollToContact()" class="gold-bg text-black px-10 py-5 rounded-3xl font-bold hover:scale-105 transition-all flex items-center gap-3 shadow-2xl shadow-gold-500/20">
+                            <span id="btn-call">اتصل بي الآن</span>
+                            <span class="text-xl">→</span>
+                        </button>
+                        <a href="#sec-exp" class="glass px-10 py-5 rounded-3xl font-bold hover:bg-white/5 transition flex items-center gap-2" id="btn-scroll">
+                            <span id="btn-more">مسيرتي المهنية</span>
+                        </a>
+                    </div>
+                </div>
 
-    <a class="btn" href="#">
-      View Resume
-    </a>
-  </div>
+                <!-- Bento: Quick Info -->
+                <div class="lg:col-span-4 grid grid-cols-1 gap-6">
+                    <div class="glass p-10 rounded-[3rem] flex flex-col justify-center reveal" style="transition-delay: 0.2s;">
+                        <h3 class="text-xs uppercase tracking-[0.3em] text-gray-500 mb-4" id="edu-label">التعليم واللغات</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="text-lg font-bold" id="edu-title">كيب تاون، جنوب أفريقيا</h4>
+                                <p class="text-xs text-gray-400" id="edu-desc">تطوير مكثف للغة الإنجليزية لمدة 6 أشهر.</p>
+                            </div>
+                            <div class="pt-2 border-t border-white/5">
+                                <h4 class="text-lg font-bold" id="high-school-title">الثانوية العامة</h4>
+                                <p class="text-xs text-gray-400" id="high-school-desc">شهادة الثانوية - تخصص علمي.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass p-10 rounded-[3rem] bg-gradient-to-br from-[#d4af37]/5 to-transparent reveal" style="transition-delay: 0.3s;">
+                        <h3 class="text-xs uppercase tracking-[0.3em] text-gray-500 mb-4" id="skills-label">مهارات تقنية</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-white/5 rounded-xl text-xs border border-white/10 font-en">OPERA PMS</span>
+                            <span class="px-4 py-2 bg-white/5 rounded-xl text-xs border border-white/10" id="skill-office">MS Office</span>
+                            <span class="px-4 py-2 bg-white/5 rounded-xl text-xs border border-white/10" id="skill-ai">ذكاء اصطناعي AI</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- Experience Grid -->
+        <section id="sec-exp" class="px-6 max-w-7xl mx-auto py-20">
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center gold-text reveal" id="sec-exp-title">الخبرات العملية</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Hospitality -->
+                <div class="md:col-span-2 glass p-12 rounded-[4rem] flex flex-col justify-between reveal">
+                    <div>
+                        <div class="flex justify-between items-center mb-8">
+                            <span class="text-xs gold-text uppercase tracking-widest" id="exp1-label">قطاع الضيافة</span>
+                            <span class="text-5xl opacity-10 font-bold">01</span>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4" id="exp1-pos">إدارة الحجوزات والاستقبال</h3>
+                        <p class="text-gray-400 text-lg leading-relaxed mb-6" id="exp1-desc">في منتجع المرجان، قمت بقيادة تجربة الضيف باستخدام أنظمة عالمية، مع التركيز على حل المشكلات وتلبية الرغبات بدقة فندقية عالية.</p>
+                        <div class="flex gap-2 mb-4">
+                             <span class="px-4 py-2 bg-[#d4af37]/20 rounded-xl text-sm gold-text font-bold border border-[#d4af37]/30">إتقان احترافي لنظام أوبرا (OPERA PMS)</span>
+                        </div>
+                    </div>
+                    <div class="pt-6 border-t border-white/5 flex justify-between items-center">
+                        <span class="font-bold text-sm">MARJAN RESORT</span>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="glass p-12 rounded-[4rem] reveal" style="transition-delay: 0.2s;">
+                    <span class="text-xs text-red-500 uppercase tracking-widest block mb-8" id="exp2-label">الإدارة الأمنية</span>
+                    <h3 class="text-2xl font-bold mb-4" id="exp2-pos">مدير أمن موقع</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-10" id="exp2-desc">برج سلامة. إدارة شاملة للفريق الأمني، وضبط العمليات الميدانية وضمان أعلى مستويات الامتثال والسلامة.</p>
+                    <div class="text-5xl opacity-10 font-bold text-right">02</div>
+                </div>
+
+                <!-- Mobily -->
+                <div class="md:col-span-2 glass p-12 rounded-[4rem] flex flex-col justify-between reveal">
+                    <div>
+                        <div class="flex justify-between items-center mb-8">
+                            <span class="text-xs text-blue-400 uppercase tracking-widest" id="exp3-label">الاتصالات</span>
+                            <span class="text-5xl opacity-10 font-bold">03</span>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4" id="exp3-pos">أخصائي تجربة عملاء (موبايلي)</h3>
+                        <p class="text-gray-400 text-lg leading-relaxed mb-4" id="exp3-desc">إدارة واستقبال المكالمات بمهنية عالية، تنفيذ طلبات الخدمات الرقمية، ومعالجة المشكلات التقنية والإدارية بفعالية لضمان رضا العميل التام.</p>
+                    </div>
+                    <div class="pt-6 border-t border-white/5 flex justify-between items-center">
+                        <span class="font-bold text-sm">MOBILY</span>
+                    </div>
+                </div>
+
+                <!-- Cashier -->
+                <div class="glass p-10 rounded-[3rem] reveal">
+                    <h3 class="font-bold mb-2" id="exp5-pos">مسؤول مبيعات (كاشير)</h3>
+                    <p class="text-gray-500 text-sm mb-4" id="exp5-desc">مطعم طوفرية. إدارة العمليات النقدية وحسابات الإغلاق اليومية بمهارة ودقة.</p>
+                    <span class="text-[10px] opacity-30 tracking-widest">TOFRIA RESTAURANT</span>
+                </div>
+                
+                <div class="glass p-10 rounded-[3rem] reveal" style="transition-delay: 0.2s;">
+                    <h3 class="font-bold mb-2" id="exp4-pos">طاقم خدمة ماكدونالدز</h3>
+                    <p class="text-gray-500 text-sm" id="exp4-desc">إتقان العمل الجماعي تحت الضغط وسرعة الإنجاز في بيئة عمل متسارعة.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section class="px-6 max-w-7xl mx-auto py-10 reveal">
+            <div class="glass p-12 rounded-[4rem]">
+                 <h2 class="text-2xl font-bold mb-8 gold-text" id="skills-title">المهارات الشخصية</h2>
+                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                    <div class="p-6 bg-white/5 rounded-2xl border border-white/5 text-center">
+                        <p class="text-xs font-bold" id="soft-1">الذكاء الاجتماعي</p>
+                    </div>
+                    <div class="p-6 bg-white/5 rounded-2xl border border-white/5 text-center">
+                        <p class="text-xs font-bold" id="soft-team">إدارة فريق العمل</p>
+                    </div>
+                    <div class="p-6 bg-white/5 rounded-2xl border border-white/5 text-center">
+                        <p class="text-xs font-bold" id="soft-group">التعاون الجماعي</p>
+                    </div>
+                    <div class="p-6 bg-white/5 rounded-2xl border border-white/5 text-center">
+                        <p class="text-xs font-bold" id="soft-2">إدارة الوقت</p>
+                    </div>
+                    <div class="p-6 bg-white/5 rounded-2xl border border-white/5 text-center">
+                        <p class="text-xs font-bold" id="soft-3">التواصل الفعال</p>
+                    </div>
+                    <div class="p-6 bg-white/5 rounded-2xl border border-white/5 text-center">
+                        <p class="text-xs font-bold" id="soft-4">حل الأزمات</p>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact-section" class="px-6 max-w-5xl mx-auto py-32">
+            <div id="contact-card" class="glass p-16 md:p-24 rounded-[5rem] text-center relative overflow-hidden reveal">
+                <div class="absolute inset-0 bg-gradient-to-b from-[#d4af37]/5 to-transparent"></div>
+                <h2 class="text-5xl md:text-7xl font-bold mb-8 gold-text" id="contact-title">لنصنع التميز معاً</h2>
+                <p class="text-gray-400 text-xl mb-16 max-w-xl mx-auto" id="contact-desc">أنا جاهز للانضمام لفريقكم وتقديم القيمة المضافة التي تبحثون عنها.</p>
+                
+                <div class="flex flex-col md:flex-row gap-8 justify-center items-center">
+                    <a href="mailto:wk.faris@pm.me" class="flex items-center gap-4 hover:scale-105 transition group">
+                        <div class="w-16 h-16 glass rounded-2xl flex items-center justify-center text-2xl group-hover:bg-[#d4af37] group-hover:text-black transition">✉️</div>
+                        <div class="text-right" id="email-box">
+                            <p class="text-[10px] text-gray-500 uppercase tracking-widest">البريد الإلكتروني</p>
+                            <p class="font-en font-bold">wk.faris@pm.me</p>
+                        </div>
+                    </a>
+                    <div class="h-10 w-px bg-white/10 hidden md:block"></div>
+                    <a href="tel:+966534686200" class="flex items-center gap-4 hover:scale-105 transition group">
+                        <div class="w-16 h-16 glass rounded-2xl flex items-center justify-center text-2xl group-hover:bg-[#d4af37] group-hover:text-black transition">📱</div>
+                        <div class="text-right" id="phone-box">
+                            <p class="text-[10px] text-gray-500 uppercase tracking-widest">رقم الجوال</p>
+                            <p class="font-en font-bold" dir="ltr">+966 53 468 6200</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center py-20 text-gray-700 text-[10px] uppercase tracking-[0.5em] reveal">
+            <p id="footer-text">© 2026 جميع الحقوق محفوظة لفارس الغامدي</p>
+        </footer>
+    </main>
+
+    <script>
+        const translations = {
+            ar: {
+                name: "فارس الغامدي",
+                bio: "متخصص محترف يجمع بين مهارات الضيافة الراقية والصرامة الإدارية. أرتكز على الانضباط والذكاء الاجتماعي لتقديم أداء استثنائي يحقق أهداف المنظمة ويتجاوز التوقعات.",
+                navContact: "تواصل معي",
+                langToggle: "ENGLISH",
+                btnCall: "اتصل بي الآن",
+                btnMore: "مسيرتي المهنية",
+                eduLabel: "التعليم واللغات",
+                eduTitle: "كيب تاون، جنوب أفريقيا",
+                eduDesc: "تطوير مكثف للغة الإنجليزية لمدة 6 أشهر.",
+                highTitle: "الثانوية العامة",
+                highDesc: "شهادة الثانوية - تخصص علمي.",
+                skillsLabel: "مهارات تقنية",
+                secExpTitle: "الخبرات العملية",
+                exp1Label: "قطاع الضيافة",
+                exp1Pos: "إدارة الحجوزات والاستقبال",
+                exp1Desc: "في منتجع المرجان، قمت بقيادة تجربة الضيف باستخدام أنظمة عالمية، مع التركيز على حل المشكلات وتلبية الرغبات بدقة فندقية عالية.",
+                exp2Label: "الإدارة الأمنية",
+                exp2Pos: "مدير أمن موقع",
+                exp2Desc: "برج سلامة. إدارة شاملة للفريق الأمني، وضبط العمليات الميدانية لضمان أعلى مستويات السلامة.",
+                exp3Label: "الاتصالات",
+                exp3Pos: "أخصائي تجربة عملاء (موبايلي)",
+                exp3Desc: "إدارة واستقبال المكالمات بمهنية، تنفيذ طلبات الخدمات، ومعالجة المشكلات بفعالية لضمان رضا العميل.",
+                exp5Pos: "مسؤول مبيعات (كاشير)", exp5Desc: "مطعم طوفرية. إدارة العمليات النقدية وحسابات الإغلاق اليومية بدقة.",
+                exp4Pos: "طاقم خدمة ماكدونالدز", exp4Desc: "العمل الجماعي تحت الضغط وسرعة الإنجاز.",
+                skillsTitle: "المهارات الشخصية",
+                soft1: "الذكاء الاجتماعي", soft2: "إدارة الوقت", soft3: "التواصل الفعال", soft4: "إدارة الأزمات",
+                softTeam: "إدارة فرق العمل", softGroup: "التعاون الجماعي",
+                skillOffice: "Microsoft Office", skillAI: "ذكاء اصطناعي AI",
+                contactTitle: "لنصنع التميز معاً",
+                contactDesc: "أنا جاهز للانضمام لفريقكم وتقديم القيمة المضافة التي تبحثون عنها.",
+                emailLabel: "البريد الإلكتروني", phoneLabel: "رقم الجوال",
+                footerText: "© 2026 جميع الحقوق محفوظة لفارس الغامدي",
+                dir: "rtl"
+            },
+            en: {
+                name: "Faris Alghamdi",
+                bio: "A professional specialist blending high-end hospitality with administrative rigor. Grounded in discipline and social intelligence to deliver exceptional performance that meets organizational goals.",
+                navContact: "GET IN TOUCH",
+                langToggle: "العربية",
+                btnCall: "CONTACT ME NOW",
+                btnMore: "MY CAREER",
+                eduLabel: "EDUCATION & LANGUAGES",
+                eduTitle: "Cape Town, South Africa",
+                eduDesc: "Intensive 6-month English language development.",
+                highTitle: "High School Diploma",
+                highDesc: "General Secondary Certificate - Scientific Stream.",
+                skillsLabel: "TECHNICAL SKILLS",
+                secExpTitle: "Professional Experience",
+                exp1Label: "HOSPITALITY",
+                exp1Pos: "Guest Relations & Reservations",
+                exp1Desc: "At Al Marjan Resort, I led the guest experience using global systems, focusing on precision and elite problem-solving.",
+                exp2Label: "SECURITY MGMT",
+                exp2Pos: "Security Site Manager",
+                exp2Desc: "Salama Tower. Comprehensive management of the security team and field operations control.",
+                exp3Label: "TELECOM",
+                exp3Pos: "Customer Experience Specialist",
+                exp3Desc: "Handling calls professionally, executing service requests, and resolving issues effectively to ensure full customer satisfaction.",
+                exp5Pos: "Sales Associate (Cashier)", exp5Desc: "Tofria Restaurant. Managed cash operations and daily closing accounts accurately.",
+                exp4Pos: "McDonald's Service Crew", exp4Desc: "Teamwork under pressure and fast-paced performance.",
+                skillsTitle: "Soft Skills",
+                soft1: "Social Intelligence", soft2: "Time Management", soft3: "Effective Communication", soft4: "Crisis Mgmt",
+                softTeam: "Team Leadership", softGroup: "Group Collaboration",
+                skillOffice: "Microsoft Office", skillAI: "AI Knowledge",
+                contactTitle: "Let's Build Excellence",
+                contactDesc: "Ready to join your team and provide the added value you seek.",
+                emailLabel: "EMAIL ADDRESS", phoneLabel: "PHONE NUMBER",
+                footerText: "© 2026 ALL RIGHTS RESERVED TO FARIS ALGHAMDI",
+                dir: "ltr"
+            }
+        };
+
+        let currentLang = 'ar';
+
+        function startApp(lang) {
+            currentLang = lang;
+            updateUI();
+            document.getElementById('lang-selector').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('lang-selector').style.display = 'none';
+                document.getElementById('main-app').classList.remove('hidden-content');
+                window.scrollTo(0, 0);
+                handleReveal();
+            }, 500);
+        }
+
+        function toggleLang() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            updateUI();
+        }
+
+        function updateUI() {
+            const t = translations[currentLang];
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = t.dir;
+            
+            document.getElementById('hero-name').innerText = t.name;
+            document.getElementById('hero-bio').innerText = t.bio;
+            document.getElementById('nav-contact').innerText = t.navContact;
+            document.getElementById('lang-toggle').innerText = t.langToggle;
+            document.getElementById('btn-call').innerText = t.btnCall;
+            document.getElementById('btn-more').innerText = t.btnMore;
+            document.getElementById('edu-label').innerText = t.eduLabel;
+            document.getElementById('edu-title').innerText = t.eduTitle;
+            document.getElementById('edu-desc').innerText = t.eduDesc;
+            document.getElementById('high-school-title').innerText = t.highTitle;
+            document.getElementById('high-school-desc').innerText = t.highDesc;
+            document.getElementById('skills-label').innerText = t.skillsLabel;
+            document.getElementById('sec-exp-title').innerText = t.secExpTitle;
+            document.getElementById('exp1-label').innerText = t.exp1Label;
+            document.getElementById('exp1-pos').innerText = t.exp1Pos;
+            document.getElementById('exp1-desc').innerText = t.exp1Desc;
+            document.getElementById('exp2-label').innerText = t.exp2Label;
+            document.getElementById('exp2-pos').innerText = t.exp2Pos;
+            document.getElementById('exp2-desc').innerText = t.exp2Desc;
+            document.getElementById('exp3-label').innerText = t.exp3Label;
+            document.getElementById('exp3-pos').innerText = t.exp3Pos;
+            document.getElementById('exp3-desc').innerText = t.exp3Desc;
+            document.getElementById('exp5-pos').innerText = t.exp5Pos;
+            document.getElementById('exp5-desc').innerText = t.exp5Desc;
+            document.getElementById('exp4-pos').innerText = t.exp4Pos;
+            document.getElementById('exp4-desc').innerText = t.exp4Desc;
+            document.getElementById('skills-title').innerText = t.skillsTitle;
+            document.getElementById('soft-1').innerText = t.soft1;
+            document.getElementById('soft-2').innerText = t.soft2;
+            document.getElementById('soft-3').innerText = t.soft3;
+            document.getElementById('soft-4').innerText = t.soft4;
+            document.getElementById('soft-team').innerText = t.softTeam;
+            document.getElementById('soft-group').innerText = t.softGroup;
+            document.getElementById('skill-office').innerText = t.skillOffice;
+            document.getElementById('skill-ai').innerText = t.skillAI;
+            document.getElementById('contact-title').innerText = t.contactTitle;
+            document.getElementById('contact-desc').innerText = t.contactDesc;
+            document.getElementById('footer-text').innerText = t.footerText;
+            
+            document.getElementById('email-box').querySelector('p').innerText = t.emailLabel;
+            document.getElementById('phone-box').querySelector('p').innerText = t.phoneLabel;
+
+            const heroBio = document.getElementById('hero-bio');
+            if (currentLang === 'en') {
+                heroBio.classList.remove('border-l-2', 'pl-8');
+                heroBio.classList.add('border-r-2', 'pr-8', 'text-left');
+                document.body.classList.add('font-en');
+            } else {
+                heroBio.classList.remove('border-r-2', 'pr-8', 'text-left');
+                heroBio.classList.add('border-l-2', 'pl-8');
+                document.body.classList.remove('font-en');
+            }
+        }
+
+        function scrollToContact() {
+            const section = document.getElementById('contact-section');
+            const card = document.getElementById('contact-card');
+            section.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                card.classList.add('section-highlight');
+                setTimeout(() => card.classList.remove('section-highlight'), 2000);
+            }, 800);
+        }
+
+        function handleReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    el.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleReveal);
+    </script>
 </body>
 </html>
