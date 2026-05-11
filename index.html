@@ -234,6 +234,18 @@
             </div>
         </section>
 
+        <!-- تحميل السيرة الذاتية Section -->
+        <section class="px-6 max-w-7xl mx-auto py-10 reveal">
+            <div class="glass p-12 rounded-[4rem] text-center bg-gradient-to-r from-transparent via-[#d4af37]/5 to-transparent">
+                <h2 class="text-3xl font-bold mb-6 gold-text" id="cv-section-title">السيرة الذاتية</h2>
+                <p class="text-gray-400 mb-8 max-w-lg mx-auto" id="cv-section-desc">يمكنكم تحميل النسخة الكاملة والمحدثة من سيرتي الذاتية بصيغة PDF.</p>
+                <a href="resume.pdf" download class="inline-flex items-center gap-4 gold-bg text-black px-12 py-5 rounded-3xl font-bold hover:scale-105 transition-all shadow-xl shadow-gold-500/10 btn-pulse">
+                    <span class="text-2xl">📥</span>
+                    <span id="btn-download-cv">تحميل السيرة الذاتية (PDF)</span>
+                </a>
+            </div>
+        </section>
+
         <!-- Contact Section -->
         <section id="contact-section" class="px-6 max-w-5xl mx-auto py-32">
             <div id="contact-card" class="glass p-16 md:p-24 rounded-[5rem] text-center relative overflow-hidden reveal">
@@ -297,6 +309,9 @@
                 soft1: "الذكاء الاجتماعي", soft2: "إدارة الوقت", soft3: "التواصل الفعال", soft4: "إدارة الأزمات",
                 softTeam: "إدارة فرق العمل", softGroup: "التعاون الجماعي",
                 skillOffice: "Microsoft Office", skillAI: "ذكاء اصطناعي AI",
+                cvTitle: "السيرة الذاتية",
+                cvDesc: "يمكنكم تحميل النسخة الكاملة والمحدثة من سيرتي الذاتية بصيغة PDF.",
+                btnDownload: "تحميل السيرة الذاتية (PDF)",
                 contactTitle: "لنصنع التميز معاً",
                 contactDesc: "أنا جاهز للانضمام لفريقكم وتقديم القيمة المضافة التي تبحثون عنها.",
                 emailLabel: "البريد الإلكتروني", phoneLabel: "رقم الجوال",
@@ -332,6 +347,9 @@
                 soft1: "Social Intelligence", soft2: "Time Management", soft3: "Effective Communication", soft4: "Crisis Mgmt",
                 softTeam: "Team Leadership", softGroup: "Group Collaboration",
                 skillOffice: "Microsoft Office", skillAI: "AI Knowledge",
+                cvTitle: "Curriculum Vitae",
+                cvDesc: "You can download the full and updated version of my CV in PDF format.",
+                btnDownload: "Download CV (PDF)",
                 contactTitle: "Let's Build Excellence",
                 contactDesc: "Ready to join your team and provide the added value you seek.",
                 emailLabel: "EMAIL ADDRESS", phoneLabel: "PHONE NUMBER",
@@ -399,6 +417,12 @@
             document.getElementById('soft-group').innerText = t.softGroup;
             document.getElementById('skill-office').innerText = t.skillOffice;
             document.getElementById('skill-ai').innerText = t.skillAI;
+            
+            // تحديث نصوص قسم السيرة الذاتية
+            document.getElementById('cv-section-title').innerText = t.cvTitle;
+            document.getElementById('cv-section-desc').innerText = t.cvDesc;
+            document.getElementById('btn-download-cv').innerText = t.btnDownload;
+
             document.getElementById('contact-title').innerText = t.contactTitle;
             document.getElementById('contact-desc').innerText = t.contactDesc;
             document.getElementById('footer-text').innerText = t.footerText;
